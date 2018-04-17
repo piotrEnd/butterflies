@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Poppins&amp;subset=latin-ext" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"> -->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+
+    <title>Butterfly SHADE Pawel Lewantal</title>
+
+    <style>
+        input[type="number"] {
+            width: 50px;
+        }
+    </style>
+</head>
+
+<body class="grey lighten-2 scrollspy" id="top">
+
+    <div class="navbar-fixed">
+        <nav class="bg-shop">
+            <div class="container">
+
+                <div class="container">
+                    <div class="nav-wrapper ">
+                        <a href="index.html" class="brand-logo hide-on-small-only">ButterflySHADE
+                        </a>
+                        <a href="#" class="button-collapse sidenav-trigger" data-activates="mobile-nav">
+                            <i class="material-icons">menu</i>
+                        </a>
+                        <ul class="right hide-on-med-and-down">
+                            <li>
+                                <a href="index.html">studio</a>
+                            </li>
+                            <li class="active">
+                                <a href="shop.html">sklep</a>
+                            </li>
+                            <li>
+                                <a href="exhibit.html">wystawy</a>
+                            </li>
+                            <li>
+                                <a href="kontakt.html">kontakt</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+
+    <ul class="sidenav center bg-shop-side" id="mobile-nav">
+        <li>
+            <a class="divider white">MENU </a>
+        </li>
+        <li>
+            <a href="index.html" class="white-text waves-effect waves-dark">studio</a>
+        </li>
+        <li>
+            <a href="shop.html " class="white-text waves-effect waves-light">sklep</a>
+        </li>
+        <li>
+            <a href="exhibit.html" class="white-text waves-effect waves-light">wystawy</a>
+        </li>
+        <li>
+            <a href="kontakt.html" class="white-text waves-effect waves-light">kontakt</a>
+        </li>
+    </ul>
+
+
+    <section class="section-heading white-text ">
+        <div class="overlay valign-wrapper bg-shop">
+            <div class="container ">
+                <div class="row row-1 ">
+                    <div class="col s12 center ">
+                        <h4>Zamówienie</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+            <input type="hidden" name="cmd" value="_cart">
+            <input type="hidden" name="upload" value="1">
+            <input type="hidden" name="business" value="piotrend@gmail.com">
+
+            <table class="table highlight centered ">
+                <thead>
+                    <tr>
+                        <th>Usuń</th>
+                        <th style="width: 10%">Ilość</th>
+                        <th>Eksponat</th>
+                        <th>Cena</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody id="output">
+                </tbody>
+
+            </table>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <input type="submit" class="modal-action modal-close waves-effect waves-orange orange btn hoverable right" value="Zamawiam z PayPal">
+
+            <a href="shop.html" class="modal-action modal-close waves-effect waves-green btn right" data-dismiss="modal">
+                <i class="material-icons right ">add_circle_outline</i>Kontynuuj zakupy</a>
+        </div>
+    </div>
+
+    <footer class="section bg-shop white-text center ">
+        <a class="grey-text text-lighten-4 center " href="#top">
+            <i class="material-icons center ">keyboard_arrow_up</i> Back to top
+            <i class="material-icons center ">keyboard_arrow_up</i>
+        </a>
+        <p>Copyright &copy; 2018 by
+            <a class="mail lime-text" href="mailto:piotrend@gmail.com ">piotrEnd</a>
+        </p>
+
+    </footer>
+
+    <script type="text/javascript " src="https://code.jquery.com/jquery-3.2.1.min.js "></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script> -->
+    <script type="text/javascript " src="js/materialize.min.js "></script>
+
+    <script>
+        var shopcart = [];
+        $(document).ready(function () {
+
+            $(".button-collapse").sideNav();
+            $('.scrollspy').scrollSpy();
+
+
+            outputCart();
+            $('#output').on('click', '.remove-item', function () {
+                var itemToDelete = $('.remove-item').index(this);
+                shopcart.splice(itemToDelete, 1);
+                sessionStorage["sca"] = JSON.stringify(shopcart);
+                outputCart();
+            })
+
+            $('#output').on('change', '.dynqua', function () {
+                var iteminfo = $(this.dataset)[0];
+                var itemincart = false;
+                var removeItem = false;
+                var itemToDelete = 0;
+                console.log(shopcart);
+                var qty = $(this).val();
+                $.each(shopcart, function (index, value) {
+                    if (value.id == iteminfo.id) {
+                        if (qty <= 0) {
+                            removeItem = true;
+                            itemToDelete = index;
+                        } else {
+                            shopcart[index].qty = qty;
+                            itemincart = true;
+                        }
+                    }
+                })
+                if (removeItem) {
+                    shopcart.splice(itemToDelete, 1);
+                }
+
+                sessionStorage["sca"] = JSON.stringify(shopcart);
+                outputCart();
+            })
+
+            function outputCart() {
+                if (sessionStorage["sca"] != null) {
+                    shopcart = JSON.parse(sessionStorage["sca"].toString());
+                }
+                console.log(sessionStorage["sca"]);
+                console.log(shopcart);
+                var holderHTML = '';
+                var total = 0;
+                var itemCnt = 0;
+                $.each(shopcart, function (index, value) {
+                    var stotal = value.qty * value.price;
+                    var a = (index + 1);
+                    total += stotal;
+                    itemCnt += parseInt(value.qty);
+                    holderHTML +=
+                        '<tr><td><a class="btn-floating btn-small waves-effect waves-light red remove-item"><i class="material-icons">remove_shopping_cart</i></a><td><input type="number" class="dynqua center col s1" name="quantity_' +
+                        a + '" value="' + value.qty + '" data-id="' + value.id +
+                        '"></td><td><input type="hidden" name="item_name_' + a + '" value="' + value.name +
+                        ' ' + value.s + '">' + value.name +
+                        '</td><td><input type="hidden" name="amount_' + a + '" value="' + formatMoney(
+                            value.price) + '"> $' + formatMoney(value.price) +
+                        ' </td><td class="text-right"> ' + formatMoney(stotal) + '</td></tr>';
+                })
+                holderHTML += '<tr style="font-weight: bold"><td class="col s1">Razem:</td><td><td></td><td>' +
+                    formatMoney(total) + '</td></tr>';
+                $('#output').html(holderHTML);
+            }
+
+            function formatMoney(n) {
+                return (n / 100).toFixed(2);
+            }
+        });
+    </script>
+
+</body>
+
+</html>

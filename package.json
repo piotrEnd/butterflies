@@ -1,0 +1,25 @@
+{
+  "name": "butterflies",
+  "version": "1.0.0",
+  "description": "shopping cart page for butterfly collector",
+  "main": "index.js",
+  "scripts": {
+    "watch": "node-sass sass/main.scss css/style.css -w",
+    "devserver": "live-server",
+    "start": "npm-run-all --parallel devserver watch",
+    "compile": "node-sass sass/main.scss css/style.comp.css",
+    "prefix":
+      "postcss --use autoprefixer -b -o css/style.prefix.css css/style.css",
+    "compress":
+      "node-sass css/style.prefix.css css/style.css --output-style uncompressed",
+    "build": "npm-run-all compile prefix compress"
+  },
+  "author": "piotrEnd",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^7.1.4",
+    "node-sass": "^4.5.3",
+    "npm-run-all": "^4.1.1",
+    "postcss-cli": "^4.1.1"
+  }
+}
